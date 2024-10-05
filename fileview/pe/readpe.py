@@ -16,9 +16,11 @@ class Pe:
         return TmpDosHdr
 
 if __name__ == "__main__":
-    pe: Pe = Pe("/home/miccra/Downloads/GenshinImpact_install_ua_f5d2ee7ed4f4.exe")
-    doshdr = pe.read()
-    doshdr.get()
+    a=IMAGE_DOS_HEADER
+    a.set(bytes(range(64)))
+    #pe: Pe = Pe("/home/miccra/Downloads/GenshinImpact_install_ua_f5d2ee7ed4f4.exe")
+    #doshdr = pe.read()
+    #doshdr.get()
     #print("IMAGE_DOS_HEADER")
     #for i in doshdr.fields:
     #    print(f"    {i}: %.4X" % int.from_bytes(bytes(doshdr.fields[i])))
