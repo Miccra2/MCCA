@@ -24,16 +24,11 @@ class ByteType:
     def set(self, data: bytes) -> None:
         # using: 'data[:len(data)]' for presrving bytes type if len(data) is one
         if self.byteorder == "big":
-            print("ByteType.set:big:", data[:len(self)] if len(self) < len(data) else bytes(len(self) - len(data)) + data[:len(data)])
             self.data = data[:len(self)] if len(self) < len(data) else bytes(len(self) - len(data)) + data[:len(data)]
         elif self.byteorder == "little":
-            print("ByteType.set:little:", data[:len(self)] if len(self) < len(data) else data[:len(data)] +  bytes(len(self) - len(data)))
             self.data = data[:len(self)] if len(self) < len(data) else data[:len(data)] + bytes(len(self) - len(data))
-        
-        print("ByteType.set:", self.data)
 
     def get(self) -> bytes:
-        print("ByteType.get:", self.data)
         return bytes(self)
 
 class Array:
@@ -54,9 +49,7 @@ class Array:
         offset: int = self.length * len(self.bytetype)
         if len(self.bytetype) < len(value):
             self.data = self.data[:offset] + value + self.data[offset+len(self.bytetype):]
-            print("Array[key]:0:", self.data[:offset] + value + self.data[offset+len(self.bytetype):])
         else:
-            print("Array[key]:1:", self.data[:offset] + bytes(len(self) - offset))
             self.data = self.data[:offset] + bytes(len(self) - offset)
 
     def __getitem__(self, key: int) -> ByteType:
@@ -66,11 +59,8 @@ class Array:
 
     def set(self, data: bytes) -> None:
         self.data = data[:len(self)] if len(self) < len(data) else data[:len(data)] + bytes(len(self) - len(data))
-        
-        print("Array.set:", self.data)
 
     def get(self) -> bytes:
-        print("Array.get:", self.data)
         return bytes(self)
 
 class Struct:
@@ -86,7 +76,6 @@ class Struct:
     def __bytes__(self) -> bytes:
         result: bytes = b""
         for key in self.fields:
-            print(key, self[key].data)
             result += bytes(self[key].get())
         return result
 
@@ -102,27 +91,22 @@ class Struct:
     def set(self, data: bytes) -> None:
         offset: int = 0
         for key in self.fields:
-            print()
             if offset < len(data) and len(self[key]) <= len(data[offset:]):
-                print(key, "Struct.set:0:", data[offset:offset+len(self[key])])
                 self[key].set(data[offset:offset+len(self[key])])
             elif offset < len(data):
-                print(key, "Struct.set:1:", data[offset:] + bytes(offset + len(self[key]) - len(data[offset:])))
                 self[key].set(data[offset:] + bytes(offset + len(self[key]) - len(data[offset:])))
             else:
-                print(key, "Struct.set:2:", bytes(len(self[key])))
                 self[key].set(bytes(len(self[key])))
-            offset += len(self[key])
-            print(type(self[key]), self[key].get(), self[key].data)
 
-        print()
-        for key in self.fields:
-            print(key, "Struct.set:end:", self[key].data)
-            print(key, "Struct.set:get:", self[key].get())
-            print("Struct.set:", id(self[key]) == id(self.fields[key]))
+            a = [(i, self[i].get(), data[offset:offset+len(self[key])]) for i in self.fields]
+            for i in a:
+                print(i[0])
+                print(i[1])
+                print(i[2])
+            print()
+            offset += len(self[key])
 
     def get(self) -> bytes:
-        list(print("Struct.get:", key, self[key].data) for key in self.fields)
         return bytes(self)
 
 del Literal

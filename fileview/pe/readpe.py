@@ -12,16 +12,12 @@ class Pe:
         with open(self.path, "rb") as file:
             data = file.read()
         
-        print(data[60:64])
-        print()
-
         TmpDosHdr.set(data)
         return TmpDosHdr
 
 if __name__ == "__main__":
     pe: Pe = Pe("/home/miccra/Downloads/GenshinImpact_install_ua_f5d2ee7ed4f4.exe")
     doshdr = pe.read()
-    print()
     doshdr.get()
     #print("IMAGE_DOS_HEADER")
     #for i in doshdr.fields:
