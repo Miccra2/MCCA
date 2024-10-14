@@ -1,1 +1,9 @@
-test/test
+.gitignore
+*.tcc2
+*.o
+*.elf
+*.exe
+*.dll
+
+test
+test/*

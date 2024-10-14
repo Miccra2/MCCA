@@ -1,0 +1,6 @@
+enum {
+    TOKEN_NONE,
+    TOKEN_NUMBER,
+    TOKEN_LABEL,
+    TOKEN_PLUS,
+};

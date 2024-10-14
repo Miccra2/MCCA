@@ -1,22 +1,49 @@
 #include <stdio.h>
-
+#include <stddef.h>
 #include <list.h>
 
-int main() {
-    size_t a = 69;
-    size_t b = 420;
-    size_t c = 3001;
+void lInfo(LIST *list) {
+    printf("list.length: %i\n", list->length);
 
-    PLIST list = lCreate();
+    for (size_t i = 0; i < list->length; i++) {
+        printf("list[%i]: %i\n", i, *(int *)(lIndex(list, i)->buffer));
+    }
 
-    lAppend(list, 8, &a);
-    lAppend(list, 8, &b);
-    lAppend(list, 8, &c);
+    printf("\n");
+}
 
-    printf("0: %i\n", *(size_t *)lGet(list, 0));
-    printf("1: %i\n", *(size_t *)lGet(list, 1));
-    printf("2: %i\n", *(size_t *)lGet(list, 2));
+int main(int argc, char *argv[]) {
+    int a = 69;
+    int b = 420;
+    int c = 3001;
+    
+    LIST list = {0};
+
+    printf("%i\n", sizeof(a));
+    
+    lPrepend(&list, lnCreate(&a, sizeof(a)));
+    lAppend(&list, lnCreate(&b, sizeof(b)));
+
+    lInfo(&list);
+
+    lInsert(&list, lnCreate(&c, sizeof(c)), 1);
+
+    lInfo(&list);
+
+    lRemove(&list, 1);
+
+    lInfo(&list);
+
+    lPop(&list);
+    lDequeue(&list);
+
+    lInfo(&list);
+
+    lAppend(&list, lnCreate(&a, sizeof(a)));
+    
+    lInfo(&list);
 
     lDelete(&list);
+
     return 0;
 }
