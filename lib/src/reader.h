@@ -5,8 +5,8 @@
 #include <stddef.h>
 
 typedef struct {
-    char *ptr;
-    char *cur;
+    size_t ptr;
+    size_t cur;
     size_t size;
     char buf[];
 } READER;

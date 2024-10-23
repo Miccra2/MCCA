@@ -1,3 +1,6 @@
+#ifndef __PE_H__
+#define __PE_H__
+
 typedef signed char i8;
 typedef signed short int i16;
 typedef signed int i32;
@@ -7,7 +10,7 @@ typedef unsigned short int u16;
 typedef unsigned int u32;
 typedef unsigned long int u64;
 
-#define IMAGE_DOS_SIGNATURE                 0x4D5A
+#define IMAGE_DOS_SIGNATURE                 0x5A4D
 #define IMAGE_NUMBEROF_DIRECTORY_ENTRIES    16
 
 typedef struct {
@@ -69,7 +72,7 @@ typedef struct {
     u32 LoaderFlags;
     u32 NumberOfRvaAndSizes;
     IMAGE_DATA_DIRECTORY    DataDirectory[IMAGE_NUMBEROF_DIRECTORY_ENTRIES];
-} IMAGE_OPTIONAL_HEADERS32;
+} IMAGE_OPTIONAL_HEADER32;
 
 typedef struct {
     u16 Magic;
@@ -102,7 +105,7 @@ typedef struct {
     u32 LoaderFlags;
     u32 NumberOfRvaAndSizes;
     IMAGE_DATA_DIRECTORY    DataDirectory[IMAGE_NUMBEROF_DIRECTORY_ENTRIES];
-} IMAGE_OPTIONAL_HEADERS64;
+} IMAGE_OPTIONAL_HEADER64;
 
 typedef struct {
     u16 Machine;
@@ -125,3 +128,5 @@ typedef struct {
     IMAGE_FILE_HEADER       FileHeader;
     IMAGE_OPTIONAL_HEADER64 OptionalHeader;
 } IMAGE_NT_HEADERS64;
+
+#endif // __PE_H__

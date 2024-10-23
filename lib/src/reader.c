@@ -4,8 +4,8 @@ READER *rCreate(void *buffer, size_t size) {
     READER *reader = malloc(sizeof(READER) + size);
     
     reader->size = size;
-    reader->ptr = reader->buf;
-    reader->cur = reader->buf;
+    reader->ptr = 0;
+    reader->cur = 0
 
     for (size_t i = 0; i < size; i++) {
         reader->buf[i] = ((char *)buffer)[i];
@@ -14,14 +14,14 @@ READER *rCreate(void *buffer, size_t size) {
     return reader;
 }
 
-void rCut(READER *reader, char *buffer) {
+void rCut(char *buffer, READER *reader) {
     if (buffer == NULL) {
         reader->ptr = reader->cur;
         return;
     }
 
     for (size_t i = 0; i < reader->cur - reader->ptr; i++) {
-        buffer[i] = reader->ptr[i];
+        buffer[i] = reader->buf[i];
     }
 
     reader->ptr = reader->cur;
