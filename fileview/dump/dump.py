@@ -38,6 +38,19 @@ if __name__ == "__main__":
     def usage() -> None:
         print("Usage: dump.py file [offset] [length]")
 
+    def toInt(text: str) -> int:
+        if text[0] == "b":
+            return int(text[1:], 2)
+        if text[0] == "o":
+            return int(text[1:], 8)
+        if text[0] == "x":
+            return int(text[1:], 16)
+        try:
+            return int(text)
+        except:
+            print("ERROR: Invalid number provided!")
+            exit(1)
+
     if len(argv) < 2:
         print("ERROR: To few input arguments given, please provide more input arguments")
         usage()
@@ -56,9 +69,12 @@ if __name__ == "__main__":
     length: int = 0
     
     if len(argv) > 2:
-        offset = int(argv[2])
+        offset = toInt(argv[2])
     if len(argv) > 3:
-        length = int(argv[3])
+        length = toInt(argv[3])
+    else:
+        length = len(data)
+
     if length > len(data):
         length = len(data) - offset
 
