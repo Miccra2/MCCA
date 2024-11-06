@@ -1,4 +1,7 @@
-typedef enum DEFAULT_TYPES {
+#ifndef __M_TYPES_H__
+#define __M_TYPES_H__
+
+typedef enum M_TYPES {
     // undefined types
     TYPE_NONE,
     TYPE_NULL,
@@ -27,19 +30,17 @@ typedef enum DEFAULT_TYPES {
     TYPE_ARRAY,
     TYPE_STRING,
 
-    // linked list
+    // linked list type
     TYPE_LIST,
 
     // function type
     TYPE_FUNCTION,
-} DEFAULT_TYPES;
 
-typedef struct OPERAND_TYPE {
-    DEFAULT_TYPES type;
-    void *value;
-} OPERAND_TYPE;
+    // variable type
+    TYPE_VARIABLE,
 
-typedef struct OPERAND_ADD {
-    OPERAND_TYPE value1;
-    OPERAND_TYPE value2;
-} OPERAND_ADD;
+    // custom type
+    TYPE_CUSTOM,
+} M_TYPES;
+
+#endif // __M_TYPES_H__

@@ -3,17 +3,18 @@
 #include <stddef.h>
 
 #include "list.h"
-#include "token.c"
-#include "operands.c"
-#include "lexer.c"
-#include "parser.c"
+#include "m_token.c"
+#include "m_types.h"
+#include "m_operands.c"
+#include "m_lexer.c"
+//#include "m_parser.c"
 
 #define USAGE   "Usage: mcc <file>\n"
 
 void printTokens(LIST *tokens) {
     printf("\n");
     for (size_t i = 0; i < tokens->length; i++) {
-        TOKEN *token = (TOKEN *)lIndex(tokens, i)->buffer;
+        M_TOKEN *token = (M_TOKEN *)lIndex(tokens, i)->buffer;
         char *pcur = token->start;
         printf("%i: '", token->kind);
         while (pcur < token->end) {
@@ -28,7 +29,7 @@ int main(int argc, char *argv[]) {
     size_t size;
     char *buffer;
     LIST *tokens;
-    LIST *operands;
+    LIST *ast;
 
     if (argc < 2) {
         fprintf(stderr, "ERROR: To few input arguments given, please provide more input arguments!\n");
@@ -53,13 +54,15 @@ int main(int argc, char *argv[]) {
     tokens = lexer(buffer, size);
     if (tokens == NULL) goto FINISH;
 
-    operands = parser(tokens);
+    //ast = parser(tokens);
+    //if (ast == NULL) goto FINISH;
 
-    //printTokens(tokens);
+    printTokens(tokens);
     //printf("tokens->length: %i\n", tokens->length);
 
 FINISH:
-    lDelete(&tokens);
-    fclose(pFile);
+    //if (ast)    lDelete(&ast);
+    if (tokens) lDelete(&tokens);
+    if (pFile)  fclose(pFile);
     return 0;
 }

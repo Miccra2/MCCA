@@ -73,10 +73,10 @@ LISTNODE *lIndex(LIST *list, size_t index) {
     return node;
 }
 
-char *lGet(LIST *list, size_t index) {
+void *lGet(LIST *list, size_t index) {
     LISTNODE *node = lIndex(list, index);
     if (node == NULL) return NULL;
-    return node->buffer;
+    return (void *)node->buffer;
 }
 
 int lPrepend(LIST *list, void *buffer, size_t size) {

@@ -16,16 +16,20 @@ typedef struct LIST {
     LISTNODE *node;
 } LIST;
 
+// list creation
 LIST *lCreate();
 LISTNODE *lnCreate(void *buffer, size_t size);
 
+// list deletion
 int lDelete(LIST **list);
 int lnDelete(LISTNODE **node);
 
+// access list itmes
 LISTNODE *lIndex(LIST *list, size_t index);
-char *lGet(LIST *list, size_t index);
-size_t lIterate(LIST *list, bool (*function)(LISTNODE *));
+void *lGet(LIST *list, size_t index);
+//size_t lIterate(LIST *list, bool (*function)(LISTNODE *));
 
+// list growth
 int lPrepend(LIST *list, void *buffer, size_t size);
 int lAppend(LIST *list, void *buffer, size_t size);
 int lInsert(LIST *list, size_t index, void *buffer, size_t size);
@@ -34,6 +38,7 @@ int lnPrepend(LIST *list, LISTNODE *node);
 int lnAppend(LIST *list, LISTNODE *node);
 int lnInsert(LIST *list, size_t index, LISTNODE *node);
 
+// list shrinking
 int lDequeue(LIST *list);
 int lPop(LIST *list);
 int lRemove(LIST *list, size_t index);
