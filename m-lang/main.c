@@ -35,6 +35,7 @@ int main(int argc, char *argv[]) {
     char *buffer;
     LIST *lines;
     //LIST *ast;
+    size_t tokens_len;
 
     if (argc < 2) {
         fprintf(stderr, "ERROR: To few input arguments given, please provide more input arguments!\n");
@@ -62,8 +63,13 @@ int main(int argc, char *argv[]) {
     //ast = parser(tokens);
     //if (ast == NULL) goto FINISH;
 
+    tokens_len = 0;
+    for (size_t i = 0; i < lines->length; i++) {
+        tokens_len += ((M_LINE *)lGet(lines, i))->tokens->length;
+    }
+
     printTokens(lines, buffer);
-    printf("len(buffer)=%li, len(lines)=%li\n", size, lines->length);
+    printf("len:buffer=%li, len:lines=%li, len:tokens=%li\n", size, lines->length, tokens_len);
 
 FINISH:
     //if (ast)    lDelete(&ast);

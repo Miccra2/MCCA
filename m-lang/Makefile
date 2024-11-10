@@ -4,20 +4,23 @@ RM=rm
 
 all: remove com-run
 com-run: com run
-com: list main clean
+com: libs main clean
 
 remove:
-	$(RM) main
+	$(RM) mcc
 
-list:
+libs:
 	$(CC) -g -c list.c -o list.o
 	$(AR) rcs liblist.a list.o
 
 main:
-	$(CC) -g main.c -o main -I. -L. -l:liblist.a -Wall -Wextra
+	$(CC) -g main.c -o mcc -I. -L. -l:liblist.a -Wall -Wextra
 
 clean:
 	$(RM) *.o
 
+check:
+	$(VALGIRND) -s --leak-check=full ./mcc
+
 run:
-	./main test0.mcs
+	./mcc test0.mcs
