@@ -1,27 +1,29 @@
 #ifndef __M_PARSER_C__
 #define __M_PARSER_C__
 
+#include <stddef.h>
+
 #include <list.h>
 
-LIST *parser(LIST *tokens) {
+LIST *parser(LIST *lines) {
     LIST *ast;
-    LIST *stack;
+    LIST *macros;
+    M_TOKEN *token;
+    M_TOKEN *dummy;
 
     ast = lCreate();
-    stack = lCreate();
+    macros = lCreate();
     for (size_t i = 0; i < tokens->length; i++) {
-        M_TOKEN *token = lGet(tokens, i);
+        token = lGet(tokens, i);
         switch (token->kind) {
-        case TOKEN_NUMBER:
-            lAppend(stack, token);
-        case TOKEN_PLUS:
-            lAppend(ast, token);
-        default:
-            fprintf(stderr, "ERROR: Invalid token kind '%.4X'!", token->kind);
+        case TOKEN_DOLLAR:
+            dummy = lGet(tokens, i + 1);
+            if (dummy == NULL || dummy->kind != TOKEN_LABEL) break;
+            
         }
     }
 
-    lDelete(&stack);
+    lDelete(&macros);
     return ast;
 }
 

@@ -11,16 +11,21 @@
 
 #define USAGE   "Usage: mcc <file>\n"
 
-void printTokens(LIST *tokens) {
+void printTokens(LIST *lines, char *buffer) {
     printf("\n");
-    for (size_t i = 0; i < tokens->length; i++) {
-        M_TOKEN *token = (M_TOKEN *)lIndex(tokens, i)->buffer;
-        char *pcur = token->start;
-        printf("%i: '", token->kind);
-        while (pcur < token->end) {
-            printf("%c", *pcur++);
+    for (size_t i = 0; i < lines->length; i++) {
+        M_LINE *line = lGet(lines, i);
+        
+        for (size_t j = 0; j < line->tokens->length; j++) {
+            M_TOKEN *token = lGet(line->tokens, j);
+            size_t cur = token->start;
+            
+            printf("%li: kind=%i \"", line->line, token->kind);
+            while (cur < token->end)
+                printf("%c", buffer[cur++]);
+            
+            printf("\"\n");
         }
-        printf("'\n");
     }
 }
 
@@ -28,8 +33,8 @@ int main(int argc, char *argv[]) {
     FILE *pFile;
     size_t size;
     char *buffer;
-    LIST *tokens;
-    LIST *ast;
+    LIST *lines;
+    //LIST *ast;
 
     if (argc < 2) {
         fprintf(stderr, "ERROR: To few input arguments given, please provide more input arguments!\n");
@@ -51,18 +56,23 @@ int main(int argc, char *argv[]) {
     fseek(pFile, 0, SEEK_SET);
     fread(buffer, 1, size, pFile);
 
-    tokens = lexer(buffer, size);
-    if (tokens == NULL) goto FINISH;
+    lines = lexer(buffer, size);
+    if (lines == NULL) goto FINISH;
 
     //ast = parser(tokens);
     //if (ast == NULL) goto FINISH;
 
-    printTokens(tokens);
-    //printf("tokens->length: %i\n", tokens->length);
+    printTokens(lines, buffer);
+    printf("len(buffer)=%li, len(lines)=%li\n", size, lines->length);
 
 FINISH:
     //if (ast)    lDelete(&ast);
-    if (tokens) lDelete(&tokens);
-    if (pFile)  fclose(pFile);
+    for (size_t i = 0; i < lines->length; i++) {
+        M_LINE *line = lGet(lines, i);
+        lDelete(&line->tokens);
+    }
+    if (lines) lDelete(&lines);
+    if (buffer) free(buffer);
+    if (pFile) fclose(pFile);
     return 0;
 }
