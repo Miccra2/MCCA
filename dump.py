@@ -1,3 +1,5 @@
+#!/usr/bin/env python3.12
+
 def dump(data: bytes, offset: int | None = None, length: int | None = None) -> str:
     start: int = 0
     end: int = 0
